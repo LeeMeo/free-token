@@ -1,0 +1,11 @@
+Connecting to OpenCode CLI...
+[OpenCode] Spawning process: D:\AI\bin\OpenCode\opencode-cli.exe
+[OpenCode] Process spawned, waiting for ready...
+[OpenCode] Ready (default)
+OpenCode CLI connected successfully
+{"level":30,"time":1770178952849,"pid":6020,"hostname":"013692BG02","msg":"Server listening at http://0.0.0.0:3002"}
+FreeClaw server running at http://0.0.0.0:3002
+[OpenCode] Process exited with code 1
+{"level":30,"time":1770178961366,"pid":6020,"hostname":"013692BG02","reqId":"req-1","req":{"method":"GET","url":"/health","hostname":"localhost:3002","remoteAddress":"127.0.0.1","remotePort":41242},"msg":"incoming request"}
+{"level":30,"time":1770178961377,"pid":6020,"hostname":"013692BG02","reqId":"req-1","res":{"statusCode":200},"responseTime":10.002000000327826,"msg":"request completed"}
+{"level":30,"time":1770178990777,"pid":6020,"hostname":"013692BG02","reqId":"req-2","req":{"method":"POST","url":"/v1/chat/completions","hostname":"localhost:3002","remoteAddress":"127.0.0.1","remotePort":3662},"msg":"incoming request"}
