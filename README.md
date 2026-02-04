@@ -2,6 +2,8 @@
 
 **免费大模型 API 网关 - 零成本使用顶级 AI 模型**
 
+**可配合 OpenClaw、飞书、Cline 等应用使用**
+
 [English](./README_EN.md) | 中文
 
 ---

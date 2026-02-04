@@ -2,13 +2,9 @@
 
 **Free AI Model API Gateway - Use Top AI Models at Zero Cost**
 
-[![][stars]][![][license]]
+**Works with OpenClaw, Feishu, Cline, and more**
 
-[![][features-ai]][![][features-streaming]][![][features-free]][![][features-local]]
-
----
-
-## ✨ Why Free-Token?
+[English](./README_EN.md) | [中文](./README.md)
 
 **You don't need to spend a dime to use top-tier AI models!**
 
