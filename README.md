@@ -2,9 +2,7 @@
 
 **免费大模型 API 网关 - 零成本使用顶级 AI 模型**
 
-[![][stars]][![][license]]
-
-[![][features-ai]][![][features-streaming]][![][features-free]][![][features-local]]
+[English](./README_EN.md) | 中文
 
 ---
 
