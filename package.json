@@ -17,10 +17,13 @@
     "llm",
     "opencode",
     "openclaw",
+    "free-llm",
+    "free-model",
     "free-token",
-    "free-ai",
-    "api",
-    "openai-compatible"
+    "api-gateway",
+    "openai-compatible",
+    "ai-gateway",
+    "chatgpt-free"
   ],
   "author": "",
   "license": "ISC",
