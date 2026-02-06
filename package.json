@@ -1,7 +1,7 @@
 {
   "name": "free-token",
   "version": "1.0.0",
-  "description": "OpenAI-compatible LLM API gateway for free AI models via OpenCode",
+  "description": "免费 AI 大模型 - 零成本使用免费大模型，OpenAI 格式兼容",
   "main": "dist/index.js",
   "directories": {
     "doc": "docs"
@@ -17,13 +17,14 @@
     "llm",
     "opencode",
     "openclaw",
-    "free-llm",
-    "free-model",
-    "free-token",
-    "api-gateway",
-    "openai-compatible",
-    "ai-gateway",
-    "chatgpt-free"
+    "free llm",
+    "free model",
+    "free ai",
+    "free token",
+    "chatgpt free",
+    "openai api free",
+    "ai free",
+    "大模型免费"
   ],
   "author": "",
   "license": "ISC",
