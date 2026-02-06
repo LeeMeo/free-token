@@ -31,7 +31,14 @@ export async function registerChatRoutes(
       return reply.status(400).send({ error: 'messages are required' });
     }
 
-    const model = requestedModel || config.defaultModel;
+    let model = requestedModel || config.defaultModel;
+    
+    // 如果请求的是 'auto'，使用当前配置的默认模型
+    if (model === 'auto') {
+      model = config.defaultModel;
+      console.log('[FreeClaw] Mapped auto ->', model);
+    }
+    
     const sessionId = request.headers['x-session-id'] as string || 'default';
     let session = contextManager.getSession(sessionId);
 
@@ -80,10 +87,14 @@ export async function registerChatRoutes(
           }
 
           const aiChunk = mapToOpenAIChunk(chunk, completionId, model);
+          // 确保返回的响应中使用实际的模型名称
+          aiChunk.model = model;
           reply.raw.write(`data: ${JSON.stringify(aiChunk)}\n\n`);
         }
 
         const finalChunk = createFinalChunk(completionId, model);
+        // 确保返回的响应中使用实际的模型名称
+        finalChunk.model = model;
         reply.raw.write(`data: ${JSON.stringify(finalChunk)}\n\n`);
         reply.raw.end();
 

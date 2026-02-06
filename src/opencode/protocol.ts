@@ -1,6 +1,6 @@
 import { OpenCodeRequest, OpenCodeResponse } from './types';
 
-let currentDefaultModel: string = 'big-pickle';
+let currentDefaultModel: string = 'minimax-m2.1-free';
 
 export function createRequest(
   id: string,
@@ -61,7 +61,9 @@ export function getDefaultModel(): string {
 export function setDefaultModel(modelId: string): boolean {
   const exists = DEFAULT_MODELS.some(m => m.id === modelId);
   if (exists) {
+    const oldModel = currentDefaultModel;
     currentDefaultModel = modelId;
+    console.log(`[ModelManager] Model switched: ${oldModel} → ${modelId} (${new Date().toISOString()})`);
     return true;
   }
   return false;

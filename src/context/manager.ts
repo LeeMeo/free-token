@@ -1,3 +1,6 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 export interface SessionContext {
   sessionId: string;
   workspace: string;
@@ -13,13 +16,77 @@ export interface SessionContext {
 export class ContextManager {
   private sessions = new Map<string, SessionContext>();
   private readonly maxTokens: number;
+  private readonly storagePath: string;
+  private readonly sessionTimeout: number;
 
-  constructor(maxTokens = 16000) {
+  constructor(maxTokens = 16000, sessionTimeout = 3600000, storagePath = './sessions') {
     this.maxTokens = maxTokens;
+    this.sessionTimeout = sessionTimeout;
+    this.storagePath = storagePath;
+    this.initStorage();
+    this.loadSessions();
+  }
+
+  private initStorage(): void {
+    if (!fs.existsSync(this.storagePath)) {
+      fs.mkdirSync(this.storagePath, { recursive: true });
+    }
+  }
+
+  private getSessionPath(sessionId: string): string {
+    return path.join(this.storagePath, `${sessionId}.json`);
+  }
+
+  private saveSession(session: SessionContext): void {
+    try {
+      const filePath = this.getSessionPath(session.sessionId);
+      fs.writeFileSync(filePath, JSON.stringify(session, null, 2));
+    } catch (error) {
+      console.error(`[ContextManager] Failed to save session ${session.sessionId}:`, error);
+    }
+  }
+
+  private loadSessions(): void {
+    if (!fs.existsSync(this.storagePath)) {
+      return;
+    }
+
+    try {
+      const files = fs.readdirSync(this.storagePath).filter(f => f.endsWith('.json'));
+      let loadedCount = 0;
+
+      for (const file of files) {
+        const filePath = path.join(this.storagePath, file);
+        try {
+          const content = fs.readFileSync(filePath, 'utf-8');
+          const session = JSON.parse(content) as SessionContext;
+          session.createdAt = new Date(session.createdAt);
+          session.lastActive = new Date(session.lastActive);
+          this.sessions.set(session.sessionId, session);
+          loadedCount++;
+        } catch (error) {
+          console.error(`[ContextManager] Failed to load session ${file}:`, error);
+        }
+      }
+
+      if (loadedCount > 0) {
+        console.log(`[ContextManager] Loaded ${loadedCount} sessions from disk`);
+      }
+    } catch (error) {
+      console.error('[ContextManager] Failed to load sessions:', error);
+    }
   }
 
   createSession(sessionId: string, workspace: string, systemMessage: string): SessionContext {
-    const session: SessionContext = {
+    let session = this.sessions.get(sessionId);
+
+    if (session) {
+      session.lastActive = new Date();
+      this.saveSession(session);
+      return session;
+    }
+
+    session = {
       sessionId,
       workspace,
       messages: [
@@ -30,11 +97,17 @@ export class ContextManager {
       lastActive: new Date()
     };
     this.sessions.set(sessionId, session);
+    this.saveSession(session);
+    console.log(`[ContextManager] Created new session: ${sessionId}`);
     return session;
   }
 
   getSession(sessionId: string): SessionContext | undefined {
-    return this.sessions.get(sessionId);
+    const session = this.sessions.get(sessionId);
+    if (session) {
+      session.lastActive = new Date();
+    }
+    return session;
   }
 
   addMessage(sessionId: string, role: 'user' | 'assistant', content: string): boolean {
@@ -44,6 +117,7 @@ export class ContextManager {
     session.messages.push({ role, content });
     session.lastActive = new Date();
     this.pruneIfNeeded(session);
+    this.saveSession(session);
     return true;
   }
 
@@ -73,14 +147,32 @@ export class ContextManager {
 
   removeSession(sessionId: string): void {
     this.sessions.delete(sessionId);
+    try {
+      const filePath = this.getSessionPath(sessionId);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    } catch (error) {
+      console.error(`[ContextManager] Failed to delete session file ${sessionId}:`, error);
+    }
   }
 
-  cleanupOldSessions(maxAge: number): void {
+  cleanupOldSessions(maxAge?: number): number {
+    const timeout = maxAge ?? this.sessionTimeout;
     const now = Date.now();
+    let cleanedCount = 0;
+
     for (const [sessionId, session] of this.sessions) {
-      if (now - session.lastActive.getTime() > maxAge) {
-        this.sessions.delete(sessionId);
+      if (now - session.lastActive.getTime() > timeout) {
+        this.removeSession(sessionId);
+        cleanedCount++;
       }
     }
+
+    if (cleanedCount > 0) {
+      console.log(`[ContextManager] Cleaned up ${cleanedCount} expired sessions`);
+    }
+
+    return cleanedCount;
   }
 }

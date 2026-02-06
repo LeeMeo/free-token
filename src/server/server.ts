@@ -10,7 +10,15 @@ export async function createServer(opencodeClient: OpenCodeClient): Promise<Fast
     logger: true
   });
 
-  const contextManager = new ContextManager(config.maxTokens);
+  const contextManager = new ContextManager(
+    config.maxTokens,
+    config.sessionTimeout,
+    './sessions'
+  );
+
+  setInterval(() => {
+    contextManager.cleanupOldSessions();
+  }, 60000);
 
   fastify.decorate('opencodeClient', opencodeClient);
   fastify.decorate('contextManager', contextManager);
