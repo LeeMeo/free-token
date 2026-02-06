@@ -1,1 +1,0 @@
-{"version":3,"file":"chat.d.ts","sourceRoot":"","sources":["../../../src/server/routes/chat.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAgC,MAAM,SAAS,CAAC;AACxE,OAAO,EAAE,cAAc,EAAE,MAAM,uBAAuB,CAAC;AACvD,OAAO,EAAE,cAAc,EAAE,MAAM,uBAAuB,CAAC;AAUvD,wBAAsB,kBAAkB,CACtC,OAAO,EAAE,eAAe,EACxB,cAAc,EAAE,cAAc,EAC9B,cAAc,EAAE,cAAc,GAC7B,OAAO,CAAC,IAAI,CAAC,CAyJf"}
