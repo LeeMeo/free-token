@@ -1,7 +1,7 @@
 {
   "name": "free-token",
   "version": "1.0.0",
-  "description": "免费 AI 大模型 - 零成本使用免费大模型，OpenAI 格式兼容",
+  "description": "Free AI Models - Free LLM API gateway, OpenAI compatible, zero cost unlimited access",
   "main": "dist/index.js",
   "directories": {
     "doc": "docs"
