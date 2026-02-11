@@ -33,3 +33,41 @@ cd free-token && npm install
 
 详细文档、使用示例、模型列表：
 https://github.com/LeeMeo/free-token
+
+---
+
+# free-token
+
+Exposing OpenCode Zen Models through an OpenAI-compatible API.
+
+## Features
+
+- Free access to MiniMax, Kimichat, GLM, and more
+- Fully compatible with OpenAI `/v1/chat/completions` API
+- Streaming support
+- Automatic conversation context management
+
+## How It Works
+
+```
+App → free-token (:3000) → OpenCode (:4096) → AI Models
+```
+
+free-token bridges the OpenAI protocol with OpenCode HTTP Server.
+
+## Installation
+
+```bash
+git clone https://github.com/LeeMeo/free-token.git
+cd free-token && npm install
+./scripts/start.sh
+```
+
+## Usage
+
+Configure any OpenAI-compatible tool to use `http://localhost:3000/v1` as the `baseUrl`.
+
+## Documentation
+
+Full documentation, examples, and model list:
+https://github.com/LeeMeo/free-token
