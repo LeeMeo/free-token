@@ -1,6 +1,6 @@
 @echo off
-REM FreeClaw 启动脚本 (Windows)
-REM 自动启动 OpenCode 服务器和 FreeClaw
+REM free-token 启动脚本 (Windows)
+REM 自动启动 OpenCode 服务器和 free-token
 
 setlocal enabledelayedexpansion
 
@@ -18,9 +18,9 @@ REM 设置默认值
 if not defined OPENCODE_PORT set OPENCODE_PORT=4096
 if not defined PORT set PORT=3000
 
-echo === FreeClaw 启动脚本 ===
+echo === free-token 启动脚本 ===
 echo OpenCode 端口: %OPENCODE_PORT%
-echo FreeClaw 端口: %PORT%
+echo free-token 端口: %PORT%
 
 REM 检查 OpenCode 是否已运行
 for /f "tokens=2" %%a in ('netstat -ano ^| findstr :%OPENCODE_PORT% ^| findstr LISTENING') do (
@@ -52,11 +52,11 @@ for /l %%i in (1,1,10) do (
 :check_freeclaw
 REM 检查是否已在运行
 for /f "tokens=2" %%a in ('netstat -ano ^| findstr :%PORT% ^| findstr LISTENING ^| findstr node') do (
-    echo FreeClaw 已在运行 (PID: %%a)
+    echo free-token 已在运行 (PID: %%a)
     exit /b 0
 )
 
-echo 启动 FreeClaw...
+echo 启动 free-token...
 
 REM 编译（如果需要）
 if "%1"=="--build" (
@@ -65,14 +65,14 @@ if "%1"=="--build" (
 )
 
 REM 启动服务
-start /B "FreeClaw" node dist\index.js >> logs\freeclaw.log 2>&1
+start /B "free-token" node dist\index.js >> logs\freeclaw.log 2>&1
 
-echo FreeClaw 已启动
+echo free-token 已启动
 
 REM 等待服务就绪
 for /l %%i in (1,1,10) do (
     curl -s "http://localhost:%PORT%/health" >nul 2>&1 && (
-        echo ^> FreeClaw 服务已就绪 (http://localhost:%PORT%)
+        echo ^> free-token 服务已就绪 (http://localhost:%PORT%)
         echo ^> 可用模型列表: http://localhost:%PORT%/v1/models
         echo.
         echo API 端点:

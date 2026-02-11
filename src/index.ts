@@ -7,7 +7,7 @@ import { OpenCodeClient } from './opencode/client';
 async function main() {
   const opencodeClient = new OpenCodeClient();
 
-  console.log('Initializing FreeClaw server...');
+    console.log('Initializing free-token server...');
   console.log(`OpenCode Server: http://${config.opencodeServerHost}:${config.opencodeServerPort}`);
 
   const server = await createServer(opencodeClient);
@@ -17,7 +17,7 @@ async function main() {
       port: config.port,
       host: config.host
     });
-    console.log(`FreeClaw server running at http://${config.host}:${config.port}`);
+    console.log(`free-token server running at http://${config.host}:${config.port}`);
   } catch (error) {
     console.error('Failed to start server:', error);
     opencodeClient.disconnect();

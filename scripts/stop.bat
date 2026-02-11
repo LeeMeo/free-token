@@ -1,24 +1,24 @@
 @echo off
-REM FreeClaw 停止脚本 (Windows)
-REM 停止 FreeClaw 和 OpenCode 服务器
+REM free-token 停止脚本 (Windows)
+REM 停止 free-token 和 OpenCode 服务器
 
 setlocal
 
 if not defined OPENCODE_PORT set OPENCODE_PORT=4096
 if not defined PORT set PORT=3000
 
-echo === FreeClaw 停止脚本 ===
+echo === free-token 停止脚本 ===
 
-REM 停止 FreeClaw
-echo 查找 FreeClaw 进程...
+REM 停止 free-token
+echo 查找 free-token 进程...
 for /f "tokens=2" %%a in ('netstat -ano ^| findstr :%PORT% ^| findstr LISTENING ^| findstr node') do (
-    echo 停止 FreeClaw (PID: %%a)
+    echo 停止 free-token (PID: %%a)
     taskkill /F /PID %%a >nul 2>&1
-    echo ^> FreeClaw 已停止
+    echo ^> free-token 已停止
     goto :stop_opencode
 )
 
-echo FreeClaw 未运行
+echo free-token 未运行
 
 :stop_opencode
 REM 停止 OpenCode 服务器

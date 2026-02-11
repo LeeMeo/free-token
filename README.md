@@ -6,7 +6,7 @@ OpenAI 兼容的 LLM API 网关，通过连接 OpenCode HTTP Server 提供 OpenA
 
 ```
 ┌─────────────────────────────────────────┐
-│              FreeClaw                    │
+│              free-token                   │
 │   (OpenAI 兼容 API 网关 :3000)           │
 └──────────────┬──────────────────────────┘
                │ HTTP
@@ -162,7 +162,7 @@ curl http://localhost:3000/health
 {
   "models": [
     {
-      "title": "FreeClaw",
+      "title": "free-token",
       "provider": "openai",
       "model": "big-pickle",
       "apiKey": "any-string",
@@ -218,7 +218,7 @@ for await (const chunk of response.body) {
 
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
-| `PORT` | `3000` | FreeClaw 服务端口 |
+| `PORT` | `3000` | free-token 服务端口 |
 | `OPENCODE_SERVER_HOST` | `127.0.0.1` | OpenCode HTTP Server 地址 |
 | `OPENCODE_SERVER_PORT` | `4096` | OpenCode HTTP Server 端口 |
 | `OPENCODE_SERVER_USERNAME` | `opencode` | 认证用户名 |
@@ -232,7 +232,7 @@ for await (const chunk of response.body) {
 
 1. 启动 OpenCode HTTP Server (如果未运行)
 2. 等待 OpenCode Server 就绪
-3. 启动 FreeClaw
+3. 启动 free-token
 4. 显示 API 端点信息
 
 ```bash
@@ -251,7 +251,7 @@ scripts\stop.bat
 # 启动 OpenCode Server
 opencode serve --port 4096 --hostname 127.0.0.1
 
-# 启动 FreeClaw
+# 启动 free-token
 npm start
 
 # 或指定端口
@@ -292,14 +292,14 @@ pm2 startup
 
 ```ini
 [Unit]
-Description=FreeClaw LLM Provider
+Description=free-token LLM Provider
 After=network.target
 
 [Service]
 Type=simple
 User=www-data
 WorkingDirectory=/path/to/freeclaw
-ExecStart=/usr/bin/node /path/to/freeclaw/dist/index.js
+ExecStart=/usr/bin/node /path/to/free-token/dist/index.js
 Restart=always
 RestartSec=10
 Environment=PORT=3000
@@ -367,7 +367,7 @@ curl -X POST http://localhost:3000/v1/chat/completions \
 ## 目录结构
 
 ```
-freeclaw/
+free-token/
 ├── src/              # TypeScript 源代码
 ├── dist/             # 编译后的 JavaScript
 ├── scripts/          # 启动/停止脚本

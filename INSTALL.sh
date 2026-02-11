@@ -1,9 +1,9 @@
 #!/bin/bash
-# FreeClaw 安装脚本
+# free-token 安装脚本
 
 set -e
 
-echo "安装 FreeClaw..."
+echo "安装 free-token..."
 
 # 检查 Node.js 版本
 NODE_VERSION=$(node -v 2>/dev/null | cut -d'v' -f2)

@@ -21,11 +21,11 @@ export async function registerChatRoutes(
   ) => {
     const { model: requestedModel, messages, stream = true } = request.body || {};
 
-    console.log('[FreeClaw] ===== POST /v1/chat/completions =====');
-    console.log('[FreeClaw] requestedModel:', requestedModel);
-    console.log('[FreeClaw] messages count:', messages?.length);
-    console.log('[FreeClaw] stream:', stream);
-    console.log('[FreeClaw] headers:', JSON.stringify(request.headers, null, 2));
+    console.log('[free-token] ===== POST /v1/chat/completions =====');
+    console.log('[free-token] requestedModel:', requestedModel);
+    console.log('[free-token] messages count:', messages?.length);
+    console.log('[free-token] stream:', stream);
+    console.log('[free-token] headers:', JSON.stringify(request.headers, null, 2));
 
     if (!messages || messages.length === 0) {
       return reply.status(400).send({ error: 'messages are required' });
@@ -36,19 +36,19 @@ export async function registerChatRoutes(
     // 如果请求的是 'auto'，使用当前配置的默认模型
     if (model === 'auto') {
       model = config.defaultModel;
-      console.log('[FreeClaw] Mapped auto ->', model);
+      console.log('[free-token] Mapped auto ->', model);
     }
     
     const sessionId = request.headers['x-session-id'] as string || 'default';
     let session = contextManager.getSession(sessionId);
 
-    console.log('[FreeClaw] using model:', model);
-    console.log('[FreeClaw] sessionId:', sessionId);
+    console.log('[free-token] using model:', model);
+    console.log('[free-token] sessionId:', sessionId);
 
     if (!session) {
       session = contextManager.createSession(sessionId, process.cwd(),
         'You are OpenCode CLI, an AI-powered software engineering assistant.');
-      console.log('[FreeClaw] Created new session:', sessionId);
+      console.log('[free-token] Created new session:', sessionId);
     }
 
     const instruction = messages[messages.length - 1].content;

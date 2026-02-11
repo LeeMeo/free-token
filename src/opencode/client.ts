@@ -60,12 +60,12 @@ function getSessionIdFromFile(): string | null {
     if (fs.existsSync(SESSION_FILE)) {
       const content = fs.readFileSync(SESSION_FILE, 'utf-8').trim();
       if (content) {
-        console.log('[FreeClaw] Loaded sessionId from file:', content);
+        console.log('[free-token] Loaded sessionId from file:', content);
         return content;
       }
     }
   } catch (error) {
-    console.log('[FreeClaw] Failed to load sessionId from file:', error);
+    console.log('[free-token] Failed to load sessionId from file:', error);
   }
   return null;
 }
@@ -73,9 +73,9 @@ function getSessionIdFromFile(): string | null {
 function saveSessionIdToFile(sessionId: string): void {
   try {
     fs.writeFileSync(SESSION_FILE, sessionId, 'utf-8');
-    console.log('[FreeClaw] Saved sessionId to file:', sessionId);
+    console.log('[free-token] Saved sessionId to file:', sessionId);
   } catch (error) {
-    console.log('[FreeClaw] Failed to save sessionId to file:', error);
+    console.log('[free-token] Failed to save sessionId to file:', error);
   }
 }
 
@@ -173,15 +173,15 @@ export class OpenCodeClient {
   async *execute(params: ExecuteParams): AsyncGenerator<OpenCodeChunk> {
     const { instruction, workspace, history, tools, timeout, signal, model, sessionId } = params;
 
-    console.log('[FreeClaw] ===== execute() START =====');
-    console.log('[FreeClaw] instruction:', JSON.stringify(instruction).substring(0, 200));
-    console.log('[FreeClaw] model:', model);
-    console.log('[FreeClaw] history count:', history.length);
-    console.log('[FreeClaw] workspace:', workspace);
+    console.log('[free-token] ===== execute() START =====');
+    console.log('[free-token] instruction:', JSON.stringify(instruction).substring(0, 200));
+    console.log('[free-token] model:', model);
+    console.log('[free-token] history count:', history.length);
+    console.log('[free-token] workspace:', workspace);
 
     // 优先使用传入的 sessionId
     if (sessionId && sessionId !== this.sessionId) {
-      console.log('[FreeClaw] Using provided sessionId:', sessionId);
+      console.log('[free-token] Using provided sessionId:', sessionId);
       this.sessionId = sessionId;
       saveSessionIdToFile(sessionId);
     }
@@ -189,71 +189,71 @@ export class OpenCodeClient {
     try {
       // 检查是否有已有 session，直接复用
       if (this.sessionId) {
-        console.log('[FreeClaw] Reusing existing session:', this.sessionId);
+        console.log('[free-token] Reusing existing session:', this.sessionId);
         
         // 直接发送消息，复用 session
         const response = await this.sendMessage(instruction, model);
         
-        console.log('[FreeClaw] Response received:');
-        console.log('[FreeClaw]   - parts.length:', response.parts.length);
+        console.log('[free-token] Response received:');
+        console.log('[free-token]   - parts.length:', response.parts.length);
 
         if (response.info.error) {
-          console.log('[FreeClaw] Error in response:', response.info.error);
+          console.log('[free-token] Error in response:', response.info.error);
           yield {
             content: '',
             done: true,
             error: response.info.error.message || response.info.error.name,
           };
-          console.log('[FreeClaw] ===== execute() END (error) =====');
+          console.log('[free-token] ===== execute() END (error) =====');
           return;
         }
 
-        console.log('[FreeClaw] Processing parts...');
+        console.log('[free-token] Processing parts...');
         for (const part of response.parts) {
-          console.log('[FreeClaw]   part.type:', part.type, 'text:', part.text?.substring(0, 100));
+          console.log('[free-token]   part.type:', part.type, 'text:', part.text?.substring(0, 100));
           if (part.type === 'text' && part.text) {
             yield { content: part.text, done: false };
           }
         }
 
-        console.log('[FreeClaw] ===== execute() END (done) =====');
+        console.log('[free-token] ===== execute() END (done) =====');
         yield { content: '', done: true };
         return;
       }
 
       // 没有 session，创建新的
-      console.log('[FreeClaw] No existing session, creating new one...');
-      await this.createSession('FreeClaw API Request');
+      console.log('[free-token] No existing session, creating new one...');
+      await this.createSession('free-token API Request');
       const response = await this.sendMessage(instruction, model);
 
-      console.log('[FreeClaw] Response received:');
-      console.log('[FreeClaw]   - parts.length:', response.parts.length);
+      console.log('[free-token] Response received:');
+      console.log('[free-token]   - parts.length:', response.parts.length);
 
       if (response.info.error) {
-        console.log('[FreeClaw] Error in response:', response.info.error);
+        console.log('[free-token] Error in response:', response.info.error);
         yield {
           content: '',
           done: true,
           error: response.info.error.message || response.info.error.name,
         };
-        console.log('[FreeClaw] ===== execute() END (error) =====');
+        console.log('[free-token] ===== execute() END (error) =====');
         return;
       }
 
-      console.log('[FreeClaw] Processing parts...');
+      console.log('[free-token] Processing parts...');
       for (const part of response.parts) {
-        console.log('[FreeClaw]   part.type:', part.type, 'text:', part.text?.substring(0, 100));
+        console.log('[free-token]   part.type:', part.type, 'text:', part.text?.substring(0, 100));
         if (part.type === 'text' && part.text) {
           yield { content: part.text, done: false };
         }
       }
 
-      console.log('[FreeClaw] ===== execute() END (done) =====');
+      console.log('[free-token] ===== execute() END (done) =====');
       yield { content: '', done: true };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.log('[FreeClaw] Exception:', errorMessage);
-      console.log('[FreeClaw] ===== execute() END (exception) =====');
+      console.log('[free-token] Exception:', errorMessage);
+      console.log('[free-token] ===== execute() END (exception) =====');
       yield { content: '', done: true, error: errorMessage };
     }
   }
