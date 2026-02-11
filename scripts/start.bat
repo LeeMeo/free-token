@@ -25,7 +25,7 @@ echo free-token 端口: %PORT%
 REM 检查 OpenCode 是否已运行
 for /f "tokens=2" %%a in ('netstat -ano ^| findstr :%OPENCODE_PORT% ^| findstr LISTENING') do (
     echo OpenCode 服务器已在运行 (PID: %%a)
-    goto :check_freeclaw
+    goto :check_freetoken
 )
 
 echo 启动 OpenCode 服务器...
@@ -44,12 +44,12 @@ echo 等待 OpenCode 服务器就绪...
 for /l %%i in (1,1,10) do (
     curl -s -u "opencode:!OPENCODE_SERVER_PASSWORD!" "http://127.0.0.1:%OPENCODE_PORT%/global/health" >nul 2>&1 && (
         echo OpenCode 服务器已就绪
-        goto :check_freeclaw
+        goto :check_freetoken
     )
     timeout /t 1 >nul
 )
 
-:check_freeclaw
+:check_freetoken
 REM 检查是否已在运行
 for /f "tokens=2" %%a in ('netstat -ano ^| findstr :%PORT% ^| findstr LISTENING ^| findstr node') do (
     echo free-token 已在运行 (PID: %%a)
@@ -65,7 +65,7 @@ if "%1"=="--build" (
 )
 
 REM 启动服务
-start /B "free-token" node dist\index.js >> logs\freeclaw.log 2>&1
+start /B "free-token" node dist\index.js >> logs\free-token.log 2>&1
 
 echo free-token 已启动
 
@@ -83,5 +83,5 @@ for /l %%i in (1,1,10) do (
     timeout /t 1 >nul
 )
 
-echo 警告: 服务可能未完全就绪，请检查 logs\freeclaw.log
+echo 警告: 服务可能未完全就绪，请检查 logs\free-token.log
 endlocal

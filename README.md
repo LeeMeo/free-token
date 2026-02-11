@@ -1,4 +1,4 @@
-# FreeClaw
+# free-token
 
 OpenAI 兼容的 LLM API 网关，通过连接 OpenCode HTTP Server 提供 OpenAI 格式的 API。
 
@@ -281,14 +281,14 @@ npm test
 ```bash
 # 使用 PM2
 npm install -g pm2
-pm2 start dist/index.js --name freeclaw
+pm2 start dist/index.js --name free-token
 pm2 save
 pm2 startup
 ```
 
 ### Systemd (Linux)
 
-创建 `/etc/systemd/system/freeclaw.service`:
+创建 `/etc/systemd/system/free-token.service`:
 
 ```ini
 [Unit]
@@ -298,7 +298,7 @@ After=network.target
 [Service]
 Type=simple
 User=www-data
-WorkingDirectory=/path/to/freeclaw
+WorkingDirectory=/path/to/free-token
 ExecStart=/usr/bin/node /path/to/free-token/dist/index.js
 Restart=always
 RestartSec=10
@@ -311,8 +311,8 @@ WantedBy=multi-user.target
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable freeclaw
-sudo systemctl start freeclaw
+sudo systemctl enable free-token
+sudo systemctl start free-token
 ```
 
 ### Docker
@@ -339,7 +339,7 @@ CMD ["node", "dist/index.js"]
 ss -tlnp | grep 3000
 
 # 查看日志
-tail -f logs/freeclaw.log
+tail -f logs/free-token.log
 ```
 
 ### OpenCode Server 问题

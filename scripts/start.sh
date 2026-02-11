@@ -19,7 +19,7 @@ FREECLAW_PORT=${PORT:-3000}
 # 确保使用正确的密码
 if [ -z "$OPENCODE_SERVER_PASSWORD" ]; then
     echo "使用默认密码..."
-    export OPENCODE_SERVER_PASSWORD="freeclaw_secret_token_2026"
+    export OPENCODE_SERVER_PASSWORD="free-token_secret_token_2026"
 else
     echo "使用.env中配置的密码..."
 fi
@@ -68,7 +68,7 @@ if [ "$1" == "--build" ]; then
 fi
 
 # 启动服务
-nohup node ../dist/index.js >> ../logs/freeclaw.log 2>&1 &
+nohup node ../dist/index.js >> ../logs/free-token.log 2>&1 &
 PID=$!
 
 echo "free-token 已启动 (PID: $PID)"
@@ -87,4 +87,4 @@ for i in {1..10}; do
     sleep 1
 done
 
-echo "警告: 服务可能未完全就绪，请检查 logs/freeclaw.log"
+echo "警告: 服务可能未完全就绪，请检查 logs/free-token.log"
